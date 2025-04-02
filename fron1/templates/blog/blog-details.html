@@ -55,37 +55,30 @@
                         </div>
 
                         <div class="news_d_footer">
-                            <a href="#"><span class="ti-heart"></span>{{ post.likes.count }} Likes</a>
-                            <a class="justify-content-center ml-sm-auto" href="#">
-                                <span class="ti-themify-favicon"></span>{{ post.comments|length }} Comments
-                            </a>
-                            <div class="news_socail ml-sm-auto">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fab fa-skype"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                            <a class="justify-content-center ml-sm-auto" href="#comments">
+        <span class="ti-themify-favicon"></span>
+        {{ post.comment_set.all|length }} Comments
+    </a>
+</div>
 
-                    <!-- Comments Section -->
-                    <div class="comments-area">
-                        <h4>{{ post.comments|length }} Comments</h4>
-                        {% for comment in post.comments %}
+<!-- Секция со всеми комментариями -->
+<div class="comments-area" id="comments">
+    <h4>{{ post.comment_set.all|length }} Comments</h4>
 
-                        <div class="comment-list">
-                            <div class="single-comment justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="desc">
-                                        <h5>{{ comment.author }}</h5>
-                                        <p class="date">{{ comment.published_at|date:"F j, Y H:i" }}</p>
-                                        <p class="comment">{{ comment.text }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
+    {% for comment in post.comment_set.all %}
+    <div class="comment-list">
+        <div class="single-comment justify-content-between d-flex">
+            <div class="user justify-content-between d-flex">
+                <div class="desc">
+                    <h5>{{ comment.author.username }}</h5>
+                    <p class="date">{{ comment.published_at|date:"F j, Y H:i" }}</p>
+                    <p class="comment">{{ comment.text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 
                     <!-- Comment Form -->
                     <div class="comment-form">
