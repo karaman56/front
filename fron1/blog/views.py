@@ -3,7 +3,8 @@ import folium
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-
+from .models import Post, Comment
+from .forms import CommentForm
 from blog.models import Comment
 from blog.models import Post
 from sensive_blog.settings import COMPANY_COORDINATES
@@ -23,21 +24,39 @@ def serialize_post(post):
 
 def index(request):
     all_posts = Post.objects.prefetch_related('author')
-    popular_posts = all_posts.annotate(likes_count=Count('likes')).order_by('-likes_count')[:3]
+    popular_posts = Post.objects.annotate(likes_count=Count('likes')).order_by('-likes_count')[:3]
     fresh_posts = all_posts.order_by('-published_at')[:5]
 
     context = {
         'most_popular_posts': [serialize_post(post) for post in popular_posts],
         'fresh_posts': [serialize_post(post) for post in fresh_posts],
     }
-    return render(request, 'blog/index.html', context)
+    return render(request, 'blog/index.html', {
+        'most_popular_posts': popular_posts,
+        'fresh_posts': fresh_posts,
+    })
+
+
+def add_comment(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user  # Для анонимных комментариев нужно убрать эту строку
+            comment.save()
+    return redirect('post_detail', slug=post.slug)
 
 
 def post_detail(request, slug):
     """
     Вьюхи не оптимизированы, потому что в последней задаче модуля Django ORM нужно их оптимизировать как раз на примере этого сайта.
     """
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(
+        Post.objects.prefetch_related('comment_set'),
+        slug=slug
+    )
     comments = Comment.objects.filter(post=post)
     serialized_comments = []
     for comment in comments:
@@ -61,7 +80,7 @@ def post_detail(request, slug):
     context = {
         'post': serialized_post,
     }
-    return render(request, 'blog-details.html', context)
+    return render(request, 'blog/blog-details.html', {'post': post})
 
 
 def contact(request):
