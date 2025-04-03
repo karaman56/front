@@ -55,6 +55,11 @@
                         </div>
 
                         <div class="news_d_footer">
+                              <!-- Красное сердечко для лайков -->
+                             <a href="#">
+                            <span class="ti-heart" style="color: red;"></span>
+                             {{ post.likes.count }} Likes
+                                </a>
                             <a class="justify-content-center ml-sm-auto" href="#comments">
         <span class="ti-themify-favicon"></span>
         {{ post.comment_set.all|length }} Comments
