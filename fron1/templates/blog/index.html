@@ -1,169 +1,110 @@
+{% extends "includes/header.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Sensive Blog - Home</title>
-    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png">
-    <link rel="stylesheet" href="{% static 'styles.min.css' %}">
-  </head>
-  <body>
 
-    <!--================Header Menu Area =================-->
-    <header class="header_area">
-      <div class="main_menu">
-        <nav class="navbar navbar-expand-lg navbar-light">
-          <div class="container box_1620">
-            <a class="navbar-brand logo_h" href="index.html">
-              <img src="{% static 'img/logo.png' %}" alt="">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-              <ul class="nav navbar-nav menu_nav justify-content-center">
-                <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right navbar-social">
-                <li><a href="#"><i class="ti-facebook"></i></a></li>
-                <li><a href="#"><i class="ti-twitter-alt"></i></a></li>
-                <li><a href="#"><i class="ti-instagram"></i></a></li>
-                <li><a href="#"><i class="ti-skype"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <main class="site-main">
-      <!--================Hero Banner start =================-->
-      <section class="mb-30px">
+{% block content %}
+<main class="site-main">
+    <section class="mb-30px">
         <div class="container">
-          <div class="hero-banner">
-            <div class="hero-banner__content">
-              <h3>Tours &amp; Travels</h3>
-              <h1>Amazing Places on earth</h1>
-              <h4>{% now "F j, Y" %}</h4>  <!-- Динамическая дата -->
+            <div class="hero-banner">
+                <div class="hero-banner__content">
+                    <h3>Tours &amp; Travels</h3>
+                    <h1>Amazing Places on earth</h1>
+                    <h4>{% now "F j, Y" %}</h4>
+                </div>
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 
-      <!--================ Blog slider start =================-->
-      <section>
+    <section>
         <div class="container">
-          <div class="d-flex">
-            {% for post in most_popular_posts %}
-            <div class="flex-fill" style="margin-right: 30px;">
-              <div class="card blog__slide text-center">
-                <div class="blog__slide__img">
-                  {% if post.image_url %}
-                    <img class="card-img rounded-0" src="{{ post.image_url }}" alt="{{ post.title }}">
-                  {% else %}
-                    <img class="card-img rounded-0" src="{% static 'img/banner/blog.png' %}" alt="Default image">
-                  {% endif %}
-                </div>
-                <div class="blog__slide__content">
-                  <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
-                  <p>{{ post.published_at|date:"F j, Y" }}</p>
-                </div>
-              </div>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-      </section>
-
-      <!--================ Start Blog Post Area =================-->
-      <section class="blog-post-area section-margin mt-4">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-8">
-              {% for post in fresh_posts %}
-              <div class="single-recent-blog-post">
-                <div class="thumb">
-                  {% if post.image_url %}
-                    <img class="img-fluid" src="{{ post.image_url }}" alt="{{ post.title }}">
-                  {% else %}
-                    <img class="img-fluid" src="{% static 'img/banner/blog.png' %}" alt="Default image">
-                  {% endif %}
-                  <!-- Добавлен стиль max-width -->
-                  <ul class="thumb-info" style="max-width: 550px;">
-                    <li><a href="#"><i class="ti-user"></i>{{ post.author }}</a></li>
-                    <li><a href="#"><i class="ti-notepad"></i>{{ post.published_at|date:"F j, Y" }}</a></li>
-                    <li><a href="#"><i class="ti-themify-favicon"></i>{{ post.comments_amount }} Comments</a></li>
-                  </ul>
-                </div>
-                <div class="details mt-20">
-                  <h3>{{ post.title }}</h3>
-                  <!-- Обрезка текста до 200 символов -->
-                  <p>{{ post.text|truncatechars:200 }}</p>
-                  <a class="button" href="{% url 'post_detail' post.slug %}">
-                    Read More <i class="ti-arrow-right"></i>
-                  </a>
-                </div>
-              </div>
-              {% endfor %}
-
-              <div class="row">
-                <div class="col-lg-12">
-                  <nav class="blog-pagination justify-content-center d-flex">
-                    <ul class="pagination">
-                      <li class="page-item">
-                        <a href="#" class="page-link" aria-label="Previous">
-                          <span aria-hidden="true"><i class="ti-angle-left"></i></span>
-                        </a>
-                      </li>
-                      <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                      <li class="page-item"><a href="#" class="page-link">2</a></li>
-                      <li class="page-item">
-                        <a href="#" class="page-link" aria-label="Next">
-                          <span aria-hidden="true"><i class="ti-angle-right"></i></span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-
-            <!-- Start Blog Post Siddebar -->
-            <div class="col-lg-4 sidebar-widgets">
-              <div class="widget-wrap">
-                <div class="single-sidebar-widget newsletter-widget">
-                  <h4 class="single-sidebar-widget__title">Newsletter</h4>
-                  <div class="form-group mt-30">
-                    <div class="col-autos">
-                      <input type="text" class="form-control" placeholder="Enter email"
-                        onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email'">
+            <div class="d-flex">
+                {% for post in most_popular_posts %}
+                <div class="flex-fill" style="margin-right: 30px;">
+                    <div class="card blog__slide text-center">
+                        <div class="blog__slide__img">
+                            {% if post.image %}
+                                <img class="card-img rounded-0" src="{{ post.image.url }}" alt="{{ post.title }}">
+                            {% else %}
+                                <img class="card-img rounded-0" src="{% static 'img/banner/blog.png' %}" alt="Default image">
+                            {% endif %}
+                        </div>
+                        <div class="blog__slide__content">
+                            <h3><a href="{% url 'post_detail' post.slug %}">{{ post.title }}</a></h3>
+                            <p>{{ post.published_at|date:"F j, Y" }}</p>
+                        </div>
                     </div>
-                  </div>
-                  <button class="bbtns d-block mt-20 w-100">Subscribe</button>
                 </div>
-                <div class="single-sidebar-widget post-category-widget">
-                  <h4 style="height:200px;">Здесь будет реклама</h4>
-                </div>
-              </div>
+                {% endfor %}
             </div>
-          </div>
         </div>
-      </section>
-    </main>
+    </section>
 
-    <!--================ Start Footer Area =================-->
-    <footer class="footer-area section-padding">
-      <div class="container">
-        <!-- Футер без изменений -->
-      </div>
-    </footer>
+    <section class="blog-post-area section-margin mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    {% for post in fresh_posts %}
+                    <div class="single-recent-blog-post">
+                        <div class="thumb">
+                            {% if post.image %}
+                                <img class="img-fluid" src="{{ post.image.url }}" alt="{{ post.title }}">
+                            {% else %}
+                                <img class="img-fluid" src="{% static 'img/banner/blog.png' %}" alt="Default image">
+                            {% endif %}
+                            <ul class="thumb-info" style="max-width: 550px;">
+                                <li><a href="#"><i class="ti-user"></i>{{ post.author }}</a></li>
+                                <li><a href="#"><i class="ti-notepad"></i>{{ post.published_at|date:"F j, Y" }}</a></li>
+                                <li><a href="#"><i class="ti-themify-favicon"></i>{{ post.comment_set.count }} Comments</a></li>
+                            </ul>
+                        </div>
+                        <div class="details mt-20">
+                            <h3>{{ post.title }}</h3>
+                            <p>{{ post.text|truncatechars:200 }}</p>
+                            <a class="button" href="{% url 'post_detail' post.slug %}">
+                                Read More <i class="ti-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
 
-    <script src="{% static 'scripts.js' %}"></script>
-  </body>
-</html>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <nav class="blog-pagination justify-content-center d-flex">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <a href="#" class="page-link" aria-label="Previous">
+                                            <span aria-hidden="true"><i class="ti-angle-left"></i></span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                    <li class="page-item">
+                                        <a href="#" class="page-link" aria-label="Next">
+                                            <span aria-hidden="true"><i class="ti-angle-right"></i></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 sidebar-widgets">
+                    <div class="widget-wrap">
+                        <div class="single-sidebar-widget newsletter-widget">
+                            <h4 class="single-sidebar-widget__title">Newsletter</h4>
+                            <div class="form-group mt-30">
+                                <input type="text" class="form-control" placeholder="Enter email">
+                            </div>
+                            <button class="bbtns d-block mt-20 w-100">Subscribe</button>
+                        </div>
+                        <div class="single-sidebar-widget post-category-widget">
+                            <h4 style="height:200px;">Здесь будет реклама</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
